@@ -1,22 +1,70 @@
 schema: spec-driven
 
 context: |
-  项目：个人品牌站（Personal Website）
-  技术栈：React 19 + Vite 7 + TypeScript + Tailwind CSS v4
-  部署：GitHub Pages，base path 为 /my-website/
-  设计风格：科技感，动态粒子风，支持亮/暗切换
-  性能：首屏加载 < 2 秒，所有图片使用 lazy loading
+  项目：个人品牌站 → AI 学习平台（全栈扩展）
+
+  技术栈：
+    前端（当前仓库 my_website）：
+      - React 19.2 + TypeScript 6
+      - Vite 8 + Tailwind CSS v4.2（@tailwindcss/vite 插件模式）
+      - react-router v7（即将引入）
+    后端（独立仓库 my_website_api，即将创建）：
+      - uv（Python 包管理与虚拟环境管理）
+      - FastAPI (Python)
+      - SQLite + SQLAlchemy + Alembic
+      - PyJWT + bcrypt 认证
+      - LLM API（OpenAI / Claude）AI 对话辅导 + 练习题生成
+
+  现状：
+    当前代码是纯前端品牌站（SPA），包含 Hero / About / Projects 三个 section，
+    无路由（锚点跳转），数据硬编码在 src/data/*.ts。
+    正在向全栈 AI 学习平台扩展：保留品牌站为公开主页，
+    新增 Dashboard（需认证）和管理后台（admin 角色）。
+
+  样式方案：
+    - Tailwind CSS v4（@custom-variant dark，class-based 暗色模式）
+    - CSS 变量体系（:root / .dark 定义 --color-bg/text/accent/surface/border）
+    - 品牌色：teal（teal-400/500/600）
+    - 不使用内联 style，所有样式通过 Tailwind class
+
+  路由（即将引入 react-router v7）：
+    - /                         品牌主页（SiteLayout，公开）
+    - /login /register          全屏认证页（独立布局）
+    - /dashboard/*              学习平台（AppLayout，需认证）
+    - /admin/*                  管理后台（AdminLayout，需 admin 角色）
+
+  部署：
+    当前阶段不考虑发布部署，只在本地运行前后端服务做测试。
+    前端：vite dev server
+    后端：uvicorn / fastapi dev server
+
+  约束：
+    - 复用已有组件（Hero/About/Projects/Navbar/Footer/ThemeProvider/ParticleCanvas），
+      不推倒重来
+    - 品牌主页内容保持不变，仅重组为 HomePage + SiteLayout
+    - 新增后端仓库不影响前端构建流程
+    - 前后端类型共享初期手动同步，不引入额外包管理
 
 rules:
   proposal:
-    - 必须明确写出 out-of-scope（不做什么）
-    - 必须评估对现有功能的影响
+    - "必须显式列出不做的事项（out-of-scope / NOT doing 清单）"
+    - "高风险变更必须包含回滚方案"
   specs:
-    - 使用 Given/When/Then 格式描述交互行为
-    - 每个 spec 必须包含至少一个边界/异常场景
+    - "所有 API 行为使用 Given/When/Then 格式"
+    - "每个 spec 必须包含至少一个错误场景"
+    - "每个 requirement 的 scenario 不超过 5 个"
+    - "单个 spec 文件不超过 2000 词"
+    - "省略理由说明，除非直接影响实现"
+    - "使用 RFC 2119 关键词（SHALL / SHOULD / MAY）"
   tasks:
-    - 每个任务粒度不超过 30 分钟
-    - 按 Phase 分组，每个 Phase 结束后等待我确认
-Langues: |
+    - "单个 task 不超过 2 小时工作量"
+    - "相关 task 按 phase 分组"
+    - "每个 phase 结束后包含验证步骤"
+    - "新建服务前必须先检查是否有可复用的已有服务"
+  design:
+    - "包含组件层级图"
+    - "文档化所有 API 端点规范"
+
+language: |
   Generate all artifacts in Simplified Chinese.
   Use English for code-related terms.

@@ -28,3 +28,14 @@ Thumbs.db
 
 # Claude Code
 .claude/
+
+# Python / Server
+__pycache__/
+*.pyc
+*.pyo
+server/dev.db
+server/.env
+server/.venv/
+
+test-report/
+.playwright-mcp/
